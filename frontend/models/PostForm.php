@@ -9,8 +9,11 @@ namespace frontend\models;
 
 
 use common\models\Posts;
+use common\models\RelationPostTags;
 use data;
+use yii\base\Exception;
 use yii\base\Model;
+use yii\db\Query;
 use yii\web\NotFoundHttpException;
 
 class PostForm extends Model
@@ -81,8 +84,28 @@ class PostForm extends Model
         $this->on(self::EVENT_AFTER_CREATE, [$this, '_eventAddTag'], $data);
     }
 
-    public function _eventAddTag()
+    public function _eventAddTag($event)
     {
+        $tag = new TagForm();
+        $tag->tags = $event->data['tags'];
+        $tagsId = $tag->saveTags();
+        // Cleat Post tags
+        RelationPostTags::deleteAll(['post_id' => $event->data['id']]);
+        // batch save tags
+        if(!empty($tagsId)){
+            $row = $tagsId;
+            foreach ($tagsId as $k => $value){
+                $row[$k]['post_id'] = $this->id;
+                $row[$k]['tag_id'] = $value;
+            }
+
+            $res = (new Query())->createCommand()
+                ->batchInsert(RelationPostTags::tableName(),['post_id','tag_id'],$row)
+                ->execute();
+            if(!$res){
+                new Exception('Faild to save tags!');
+            }
+        }
 
     }
 
