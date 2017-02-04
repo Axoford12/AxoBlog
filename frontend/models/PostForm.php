@@ -82,6 +82,7 @@ class PostForm extends Model
     public function _eventAfterCreate($data)
     {
         $this->on(self::EVENT_AFTER_CREATE, [$this, '_eventAddTag'], $data);
+        $this->trigger(self::EVENT_AFTER_CREATE);
     }
 
     public function _eventAddTag($event)
@@ -89,6 +90,7 @@ class PostForm extends Model
         $tag = new TagForm();
         $tag->tags = $event->data['tags'];
         $tagsId = $tag->saveTags();
+        print_r($tagsId);
         // Cleat Post tags
         RelationPostTags::deleteAll(['post_id' => $event->data['id']]);
         // batch save tags
