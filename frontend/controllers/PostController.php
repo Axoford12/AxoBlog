@@ -9,6 +9,7 @@ namespace frontend\controllers;
 
 
 use common\models\Cats;
+use common\models\Posts;
 use frontend\models\PostForm;
 use yii\web\Controller;
 
@@ -63,6 +64,17 @@ class PostController extends Controller
 
         $cat = Cats::getAllCats();
         return $this->render('create', ['model' => $model, 'cat' => $cat]);
+    }
+
+    /**
+     * Get Post Views
+     */
+    public function actionViews(){
+        $model = new PostForm();
+        // Create a new Model of table named posts.
+        $data = $model->getViewsById(\Yii::$app->request->get('id'));
+        // Get data by id of posts
+        return $this->render('view',['data' => $data]); // Show views
     }
 
 }

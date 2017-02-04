@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\db\ActiveRelationTrait;
 
 /**
  * This is the model class for table "posts".
@@ -56,5 +57,9 @@ class Posts extends ActiveRecord
             'created_at' => '创建于：',
             'updated_at' => '修改于：',
         ];
+    }
+    public function getRelate()
+    {
+        return $this->hasMany(RelationPostTags::className(),['post_id' => 'id']);
     }
 }

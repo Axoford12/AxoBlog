@@ -10,6 +10,7 @@ namespace frontend\models;
 
 use common\models\Posts;
 use yii\base\Model;
+use yii\web\NotFoundHttpException;
 
 class PostForm extends  Model
 {
@@ -52,6 +53,24 @@ class PostForm extends  Model
         $post->setAttributes($this->attributes);
         $post->created_at = time();
         $post->save();
+
+        $this->_eventAfterCreate();
+
+        return true;
+    }
+    public function getViewsById($id){
+        $res = Posts::find()->with('relate')->where(['id' => $id])->asArray()->one();
+        if(!$res){
+            throw new NotFoundHttpException('没有文章');
+        }
+        print_r($res);
+    }
+
+    /**
+     *  Be call after create
+     */
+    public function _eventAfterCreate(){
+
     }
 
 }
