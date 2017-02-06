@@ -9,11 +9,8 @@ namespace frontend\models;
 
 
 use common\models\Posts;
-use common\models\RelationPostTags;
 use data;
-use yii\base\Exception;
 use yii\base\Model;
-use yii\db\Query;
 use yii\web\NotFoundHttpException;
 
 class PostForm extends Model
