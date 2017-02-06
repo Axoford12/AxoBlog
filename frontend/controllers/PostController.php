@@ -55,6 +55,7 @@ class PostController extends Controller
         }
         $model = new PostForm();
         if ($model->load(\Yii::$app->request->post())) {
+            print_r(\Yii::$app->request->post());exit;
             if (!$model->create()) {
 
             } else {

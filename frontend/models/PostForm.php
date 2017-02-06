@@ -90,6 +90,8 @@ class PostForm extends Model
         $tag = new TagForm();
         $tag->tags = $event->data['tags'];
         $tagsId = $tag->saveTags();
+        print_r($event->data);
+        print_r($tagsId);exit;
         // Cleat Post tags
         RelationPostTags::deleteAll(['post_id' => $event->data['id']]);
         // batch save tags
