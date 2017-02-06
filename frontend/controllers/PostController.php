@@ -71,7 +71,7 @@ class PostController extends Controller
     /**
      * Get Post Views
      */
-    public function actionView(){
+    public function actionView($id){
         $model = new PostForm();
         // Create a new Model of table named posts.
         $data = $model->getViewsById(\Yii::$app->request->get('id'));
@@ -79,7 +79,7 @@ class PostController extends Controller
 
         // Implemented Article Statistics
         $model = new PostExtends();
-        $model->upCounter();// TODO Implements this function!
+        $model->upCounter(['post_id' => $id],'browser',1);
         return $this->render('view',['data' => $data]); // Show views
     }
 
