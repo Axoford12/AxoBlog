@@ -18,12 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = \yii\bootstrap\ActiveForm::begin()?>
             <?= $form->field($model,'title')->textInput(['maxlength' => true]); ?>
             <?= $form->field($model,'cat_id')->dropDownList($cat); ?>
-            <?= $form->field($model, 'label_img')->widget('common\widgets\file_upload\FileUpload',[
-                'config'=>[
-
-                    'domain_url' => 'http://www.yii-china.com',
-                ]
-            ]) ?>
+            <?= $form->field($model,'summary')->textInput();?>
             <?= $form->field($model, 'content')->widget('common\widgets\ueditor\Ueditor',[
                 'options'=>[
                     'initialFrameWidth' => 850,

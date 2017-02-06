@@ -39,7 +39,7 @@ class Posts extends ActiveRecord
         return [
             [['content'], 'string'],
             [['cat_id', 'is_valid', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'summary', 'label_img'], 'string', 'max' => 255],
+            [['title', 'summary'], 'string', 'max' => 255],
         ];
     }
 
@@ -53,7 +53,6 @@ class Posts extends ActiveRecord
             'title' => '标题',
             'summary' => '小摘要',
             'content' => '内容',
-            'label_img' => '标签图',
             'cat_id' => '分类ID',
             'is_valid' => '有效性',
             'created_at' => '创建于：',

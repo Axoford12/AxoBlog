@@ -21,7 +21,7 @@ class PostWidget extends \yii\base\Widget
     public function run(){
         $curPage = \Yii::$app->request->get('page',1);
         $cond = ['=','is_valid',Posts::IS_VALID];
-        $res = PostForm::getList($cond,$curPage,$this->limit);// TODO Implement this function!
+        $res = PostForm::getList($cond,$curPage,$this->limit);
         $result[ 'title'] = $this->title?:'文章';
         $result[ 'more'] = Url::to(['post/index']);
         $result[ 'body'] = $res['data'];

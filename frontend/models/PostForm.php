@@ -31,7 +31,7 @@ class PostForm extends Model
         return [
             [['title', 'id', 'content', 'cat_id'], 'required', 'message' => '必须要填哦！'],
             [['id', 'cat_id'], 'integer', 'message' => 'id必须是整数的嘛！'],
-            ['title', 'string', 'min' => '4', 'max' => '50', 'message' => '标题要认真打的！'],
+            ['title', 'string', 'min' => 4, 'max' => 50, 'message' => '标题要认真打的！'],
             ['summary', 'required', 'message' => '不写是不行的哦！'],
             ['summary', 'string', 'min' => 0, 'max' => 90, 'message' => '写那么长干嘛納？']
         ];
@@ -44,7 +44,6 @@ class PostForm extends Model
             'title' => '标题',
             'content' => '内容',
             'tags' => '标签',
-            'label_img' => '标签图',
             'cat_id' => '分类',
             'summary' => '写个小摘要吧!'
         ];
@@ -70,6 +69,20 @@ class PostForm extends Model
             throw new NotFoundHttpException('没有文章');
         }
         return $res;
+    }
+    public static function getList($cond,$pageSize = 5,$curPage = 1,$orderBy = ['id' => SORT_DESC]){
+        $post = new Posts();
+        $select = ['id','title','is_valid','summary','cat_id','created_at'];
+        $query = $post
+            ->find()
+            ->select($select)
+            ->where($cond)
+            ->with('extend')
+            ->orderBy($orderBy);
+        // Get Pages data
+        $res = $post->getPages($curPage,$pageSize,$query); # TODO Implement this function
+        // Format this data
+        $res['data'] = self::_format($res['data']);# TODO Implement this function
     }
 
     /**
