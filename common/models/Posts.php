@@ -21,6 +21,8 @@ use yii\db\ActiveRelationTrait;
  */
 class Posts extends ActiveRecord
 {
+    const IS_VALID = 1;
+    const NO_VALID = 0;
     /**
      * @inheritdoc
      */
