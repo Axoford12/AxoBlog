@@ -9,7 +9,7 @@ namespace frontend\controllers;
 
 
 use common\models\Cats;
-use common\models\Posts;
+use common\models\PostExtends;
 use frontend\models\PostForm;
 use yii\base\Exception;
 use yii\web\Controller;
@@ -76,6 +76,10 @@ class PostController extends Controller
         // Create a new Model of table named posts.
         $data = $model->getViewsById(\Yii::$app->request->get('id'));
         // Get data by id of posts
+
+        // Implemented Article Statistics
+        $model = new PostExtends();
+        $model->upCounter();// TODO Implements this function!
         return $this->render('view',['data' => $data]); // Show views
     }
 
