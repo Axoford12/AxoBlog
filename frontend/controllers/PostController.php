@@ -72,6 +72,9 @@ class PostController extends Controller
      * Get Post Views
      */
     public function actionView($id){
+        if(!isset($id)){
+            $id = \Yii::$app->get('id');
+        }
         $model = new PostForm();
         // Create a new Model of table named posts.
         $data = $model->getViewsById(\Yii::$app->request->get('id'));

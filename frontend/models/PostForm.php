@@ -57,16 +57,15 @@ class PostForm extends Model
         $post->setAttributes($this->attributes);
         $post->created_at = time();
         $post->save();
+        $this->attributes = $post->getAttributes();
         $data = array_merge($this->getAttributes(), $post->getAttributes());
         $this->_eventAfterCreate($data);
-
-
         return true;
     }
 
     public function getViewsById($id)
     {
-        $res = Posts::find()->where(['id' => $id])->asArray()->one();
+        $res = Posts::find()->with('extend')->where(['id' => $id])->asArray()->one();
         if (!$res) {
             throw new NotFoundHttpException('没有文章');
         }

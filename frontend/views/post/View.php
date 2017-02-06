@@ -15,7 +15,8 @@ $this->params['breadcrumbs'][] = $data['title'];
             <p>
                 <?= $data['content']; ?>
             </p>
-            <span>发布：<?= date('Y-m-d', $data['created_at']); ?></span>
+            <span>发布：<?= date('Y-m-d', $data['created_at']); ?></br></span>
+            <span>本条内容已经被<?= isset($data['extend']['browser'])?$data['extend']['browser']:0 ?>个小伙伴围观</span>
         </div>
     </div>
 

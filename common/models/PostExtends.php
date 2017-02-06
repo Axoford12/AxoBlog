@@ -54,8 +54,8 @@ class PostExtends extends \yii\db\ActiveRecord
      * @param $num
      */
     public function upCounter($cond,$attribute,$num){
-        $counter = $this->findOne($cond);
-        if($counter){
+        $counter = PostExtends::findOne($cond);
+        if(!$counter){
             // This is a  new Article
             $this->setAttributes($cond);
             $this->$attribute = $num;
