@@ -46,7 +46,6 @@ class PostForm extends Model
             'id' => 'ID',
             'title' => '标题',
             'content' => '内容',
-            'tags' => '标签',
             'label_img' => '标签图',
             'cat_id' => '分类',
             'summary' => '写个小摘要吧!'
@@ -81,35 +80,8 @@ class PostForm extends Model
      */
     public function _eventAfterCreate($data)
     {
-        $this->on(self::EVENT_AFTER_CREATE, [$this, '_eventAddTag'], $data);
-        $this->trigger(self::EVENT_AFTER_CREATE);
-    }
-
-    public function _eventAddTag($event)
-    {
-        $tag = new TagForm();
-        $tag->tags = $event->data['tags'];
-        $tagsId = $tag->saveTags();
-        print_r($event->data);
-        print_r($tagsId);exit;
-        // Cleat Post tags
-        RelationPostTags::deleteAll(['post_id' => $event->data['id']]);
-        // batch save tags
-        if(!empty($tagsId)){
-            $row = $tagsId;
-            foreach ($tagsId as $k => $value){
-                $row[$k]['post_id'] = $this->id;
-                $row[$k]['tag_id'] = $value;
-            }
-
-            $res = (new Query())->createCommand()
-                ->batchInsert(RelationPostTags::tableName(),['post_id','tag_id'],$row)
-                ->execute();
-            if(!$res){
-                new Exception('Faild to save tags!');
-            }
-        }
 
     }
+
 
 }
