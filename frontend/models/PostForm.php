@@ -46,6 +46,7 @@ class PostForm extends Model
             'id' => 'ID',
             'title' => '标题',
             'content' => '内容',
+            'tags' => '标签',
             'label_img' => '标签图',
             'cat_id' => '分类',
             'summary' => '写个小摘要吧!'
@@ -62,16 +63,17 @@ class PostForm extends Model
         $data = array_merge($this->getAttributes(), $post->getAttributes());
         $this->_eventAfterCreate($data);
 
+
         return true;
     }
 
     public function getViewsById($id)
     {
-        $res = Posts::find()->with('relate')->where(['id' => $id])->asArray()->one();
+        $res = Posts::find()->where(['id' => $id])->asArray()->one();
         if (!$res) {
             throw new NotFoundHttpException('没有文章');
         }
-        print_r($res);
+        return $res;
     }
 
     /**
@@ -80,7 +82,7 @@ class PostForm extends Model
      */
     public function _eventAfterCreate($data)
     {
-
+        $this->on(self::EVENT_AFTER_CREATE, [$this, '_eventAddTag'], $data);
     }
 
 
