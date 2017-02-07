@@ -9,7 +9,6 @@ use Yii;
  *
  * @property integer $id
  * @property integer $post_id
- * @property integer $tag_id
  */
 class RelationPostTags extends \yii\db\ActiveRecord
 {
@@ -27,8 +26,8 @@ class RelationPostTags extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['post_id', 'tag_id'], 'integer'],
-            [['post_id', 'tag_id'], 'unique', 'targetAttribute' => ['post_id', 'tag_id'], 'message' => 'The combination of Post ID and Tag ID has already been taken.'],
+            [['post_id', ], 'integer'],
+            [['post_id', ], 'unique', 'targetAttribute' => ['post_id', 'tag_id'], 'message' => 'The combination of Post ID and Tag ID has already been taken.'],
         ];
     }
 
@@ -39,8 +38,7 @@ class RelationPostTags extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'post_id' => 'Post ID',
-            'tag_id' => 'Tag ID',
+            'post_id' => 'Post ID'
         ];
     }
 }
