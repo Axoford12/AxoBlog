@@ -29,7 +29,7 @@ class PostForm extends Model
     public function rules()
     {
         return [
-            [['title', 'id', 'content', 'cat_id'], 'required', 'message' => '必须要填哦！'],
+            [['title', 'id', 'content', 'cat_id', 'summary'], 'required', 'message' => '必须要填哦！'],
             [['id', 'cat_id'], 'integer', 'message' => 'id必须是整数的嘛！'],
             ['title', 'string', 'min' => 4, 'max' => 50, 'message' => '标题要认真打的！'],
             ['summary', 'required', 'message' => '不写是不行的哦！'],
@@ -52,10 +52,11 @@ class PostForm extends Model
     public function create()
     {
         $post = new Posts();
-        $post = new Posts();
         $post->setAttributes($this->attributes);
         $post->created_at = time();
+        $post->label_img = self::_getLabelImg($this->content);
         $post->save();
+
         $this->attributes = $post->getAttributes();
         $data = array_merge($this->getAttributes(), $post->getAttributes());
         $this->_eventAfterCreate($data);
@@ -70,23 +71,25 @@ class PostForm extends Model
         }
         return $res;
     }
-    public static function getList($cond,$pageSize = 5,$curPage = 1,$orderBy = ['id' => SORT_DESC])
+
+    public static function getList()
     {
         $post = new Posts();
-        $select = ['id', 'title', 'is_valid', 'summary', 'cat_id', 'created_at'];
+        $select = ['id', 'title', 'is_valid', 'summary', 'cat_id', 'created_at',
+        'label_img'];
         $query = $post
             ->find()
             ->select($select)
-            ->where($cond)
             ->with('extend')
-            ->orderBy($orderBy);
-        // Get Pages data
-        $res = $post->getPages($curPage, $pageSize, $query); # TODO Implement this function
-        // Format this data
-        $res['data'] = self::_format($res['data']);# TODO Implement this function
+            ->asArray()
+            ->all();
+        $res['data'] = $query;
+        return $res;
     }
-    private static function _format($data){
-        foreach($data as $list){
+
+    private static function _format($data)
+    {
+        foreach ($data as $list) {
 
         }
     }
@@ -98,6 +101,14 @@ class PostForm extends Model
     public function _eventAfterCreate($data)
     {
         $this->on(self::EVENT_AFTER_CREATE, [$this, '_eventAddTag'], $data);
+    }
+    private function _getLabelImg($content){
+        if(preg_match("/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg]))[\'|\"].*?[\/]?>/",$content,$match)){
+            return($match[1]);
+        } else {
+            return '0';
+        }
+
     }
 
 

@@ -23,6 +23,7 @@ class Posts extends ActiveRecord
 {
     const IS_VALID = 1;
     const NO_VALID = 0;
+
     /**
      * @inheritdoc
      */
@@ -59,7 +60,10 @@ class Posts extends ActiveRecord
             'updated_at' => '修改于：',
         ];
     }
-    public function getExtend(){
-        return $this->hasOne(PostExtends::className(),['post_id' => 'id']);
+
+    public function getExtend()
+    {
+        return $this->hasOne(PostExtends::className(), ['post_id' => 'id']);
     }
+
 }
