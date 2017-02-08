@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Posts;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -72,7 +73,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $posts = Posts::find()
+            ->select(['id','label_img'])
+            ->limit(4)
+            ->asArray()
+            ->all();
+        return $this->render('index',['data' => $posts]);
     }
 
     /**
